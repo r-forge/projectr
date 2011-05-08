@@ -1,1 +1,0 @@
-exportPattern("^(create|get|is_data|write)_")
