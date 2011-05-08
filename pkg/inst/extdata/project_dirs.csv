@@ -1,0 +1,10 @@
+name,path,description
+admin,Admin,Admin documents
+analysis,Analysis,"R code files for cleaning, analysing and presenting the data"
+test,Analysis/Test,R code files for testing the contents of the Analysis dir
+data,Data,Cleaned and derived data
+original_data,Data/Original Data,Data before any manipulation or analysis
+presentations,Presentations,Presentations related to the project
+reports,Reports,Reports and papers from the analysis
+results,Results,Tables and other results from the analysis
+graphs,Results/Graphs,Graphs and other visualisations from the analysis

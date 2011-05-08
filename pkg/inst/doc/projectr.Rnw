@@ -1,0 +1,143 @@
+\documentclass{article}
+
+\usepackage{natbib}
+\usepackage{graphics}
+\usepackage{amsmath}
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+
+% \VignetteIndexEntry{projectr Example}
+% \VignetteKeyword{projectr}
+% \VignetteKeyword{directory}
+% \VignetteKeyword{dir
+% \VignetteKeyword{folder}
+% \VignetteKeyword{workflow}
+
+\begin{document}
+
+<<startup,include=FALSE,echo=FALSE>>=
+options(keep.source = TRUE, width = 60)
+library(projectr)
+projectr_description <- packageDescription("projectr")
+@
+
+\title{projectr Package Example (Version \Sexpr{projectr_description$Version})}
+\author{Richard Cotton}
+\maketitle
+
+\section{Introduction}
+
+Project directory structures can easily become unwieldy if you are not careful. 
+Even worse, it is very easy for directory structures to be completely different
+from one project to the next.  This can make it difficult to find files at a 
+later date.  It also prevents code reuse, because hard-coded links to files are
+not portable between projects.  The \verb@projectr@ package contains simple 
+tools to allow programmatic generation of project struture, thus eliminating 
+human frailty.
+
+To illustrate the basic concept, if we want to list the contents of the 
+directory where we keep our graphs, a typical method would be to hard-code a 
+path.
+
+\begin{verbatim}
+dir("some path/to where/the graphs/are stored")
+\end{verbatim}
+
+In the next project, the graphs may be somewhere else, so the code would need 
+to be changed.  Additionally, the location of the graphs directory should be 
+kept distinct from the actions upon it.  Our intention is much clearer if we 
+write
+
+\begin{verbatim}
+dir(graphs_dir())
+\end{verbatim}
+
+Likewise, if we want to read in a dataset, some typical code would be
+
+\begin{verbatim}
+my_data <- read.csv("some path/to the data/my_data.csv")
+\end{verbatim}
+
+This can again be made clearer with
+
+\begin{verbatim}
+my_data <- read.csv(data_file("my_data.csv"))
+\end{verbatim}
+
+\section{Defining the project structure}
+The project directory structure is read from a file when the package is 
+attached.  If there is a file named \verb@project_dirs.csv@ in the current 
+user's home directory (whatever \verb@~@ expands to), then that is read. 
+Otherwise, the copy of \verb@project_dirs.csv@ in the \verb@extdata@ directory 
+within the package is used.  The file must have the following attributes:
+
+\begin{enumerate}
+	\item When read by \verb@read.csv@, the result must be a data frame with at 
+	least one row.
+	\item It must have a character (\emph{not} factor) column named 'name', 
+	containing the names of the directories in the project.  Each name must be a 
+	unique, valid variable name.
+	\item It must have a character (again, \emph{not} factor) column named 'path',
+	containing the relative paths to the directories.  The locations do not need 
+	to be unique, but there is no advantage in having different names pointing to 
+	the same place.
+\end{enumerate}
+
+The version of \verb@project_dirs.csv@ that ships with the package contains a
+third column, \verb@description@, which provides a short description of each
+directory.
+
+The data frame created from the \verb@project_dirs.csv@ file is stored in an 
+\verb@option@ named \verb@project_dirs@.  If you have provided your own version
+of the file, you can check its validity with 
+\verb@is_data_suitable_for_project_dirs@.
+
+If you wish to copy an existing directory structure, then use 
+\verb@copy_dir_structure@ with the root dir of your structure to copy.  (It 
+uses the current working dir by default.)
+
+<<>>=
+#New project structures will be based upon the existing directory
+old_options <- options(project_dirs = copy_dir_structure())
+print(getOption("project_dirs"))
+
+#Clean up
+options(old_options)
+@@
+
+\section{Creating project files}
+You can create the directories for a project using \verb@create_project_dirs@.
+
+<<>>=
+td <- tempdir()
+create_project_dirs(td)
+@
+
+This will try to create directories relative to the input argument (a temporary 
+directory, in the above case) according to the values in the 'path' column of 
+\verb@getOption(project_dirs)@.
+
+As a bonus, it will also create a template \verb@README.txt@ file in that directory 
+with suggestions for contents: a project description, software requirements and 
+so on.
+
+\section{Accessing the directories}
+Once the package is attached, to make full use of it, you need to create the 
+functions to access directories specified in \verb@getOption(project_dirs)@.
+This is done by calling \verb@create_dir_fns@ and \verb@create_file_fns@. By
+default, these assign the functions into the global environment, though you
+can choose any environment.
+
+<<>>=
+#Create the functions to access these directories
+e <- new.env()
+create_dir_fns(e)
+create_file_fns(e)
+ls(envir = e)
+
+#Clean up
+rm(e)
+@@
+
+
+\end{document}
