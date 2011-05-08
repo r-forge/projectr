@@ -1,0 +1,13 @@
+Package: projectr
+Type: Package
+Title: Creates and organises project directories
+Version: 0.0-7
+Date: 2011-05-01
+Author@R: person("Richard", "Cotton", email = "richierocks@gmail.com")
+Author: Richard Cotton
+Maintainer: Richard Cotton <richierocks@gmail.com>
+Depends: R (>= 2.0.0), utils
+Description: Helps you maintain consistency in file locations across projects, by allowing functional access to directories.  For example, if you specify that your project should have a data directory with location "Data", then a function data_dir will be created returning that location.
+License: Unlimited
+LazyLoad: yes       
+LazyData: yes
