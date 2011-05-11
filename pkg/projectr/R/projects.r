@@ -1,11 +1,21 @@
+is_data_suitable_for_projects_option <- function(data)
+{          
+  #Checks to see if the input is suitable to be used for getOption("projects")
+  if(!.is_data_suitable_base(data))
+  {
+    return(FALSE)
+  }
+  if("startup" %in% colnames(data) && !is.character(data$startup))
+  {
+    warning("The 'startup' column does not have mode 'character'")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
 open_project <- function(name., cleanup = FALSE, ...)
 {
   #Opens a project named in getOption("projects"), changing the working directory and running startup code.
-  if(cleanup)
-  {
-    rm(list = ls(envir = globalenv()))
-    graphics.off()
-  }
   projects <- getOption("projects")
   if(!is_data_suitable_for_projects_option(projects))
   {
@@ -17,18 +27,23 @@ open_project <- function(name., cleanup = FALSE, ...)
     name. <- name.[1L]
   }
   name. <- as.character(name.)
+  if(!(name. %in% projects$name))
+  {
+    stop("The project name was not recognised.")
+  }
   project <- subset(projects, name == name.)
+  
+  if(cleanup)
+  {
+    rm(list = ls(envir = globalenv()))
+    graphics.off()
+  }
+  
   setwd(project$path)
+  
   if("startup" %in% colnames(project))
   {
     eval(parse(text = project$startup))
   }
-  files_in_project <- list.files(recursive = TRUE)
-  is_startup_file <- grepl(
-    "startup.r", 
-    tolower(basename(files_in_project)), 
-    fixed = TRUE
-  )
-  lapply(files_in_project[is_startup_file], source, ...)
   invisible(project)
 }
