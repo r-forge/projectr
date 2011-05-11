@@ -17,7 +17,7 @@ create_dir_fn <- function(name., envir = globalenv())
     paste(name., "_dir", sep = ""), 
     function(expand = getOption("expand_path"))
     {
-      as.character(path_expand(
+      as.character(.path_expand(
         with(getOption("project_dirs"), 
           path[name == name.]
         ), expand
@@ -42,7 +42,7 @@ create_file_fn <- function(name., envir = globalenv())
     paste(name., "_file", sep = ""), 
     function(file, expand = getOption("expand_path"))
     {
-      as.character(path_expand(
+      as.character(.path_expand(
         with(getOption("project_dirs"), 
           file.path(path[name == name.], file)
         ), expand
@@ -75,7 +75,7 @@ create_project_dirs <- function(location = getwd(), ...)
 get_dir <- function(name., expand = getOption("expand_path"))
 {
   #Returns the location of a directory named in getOptions("project_dirs")
-  as.character(path_expand(
+  as.character(.path_expand(
     with(getOption("project_dirs"),   
       path[name == name.]
     ), 
@@ -86,14 +86,29 @@ get_dir <- function(name., expand = getOption("expand_path"))
 get_file <- function(file, name., expand = getOption("expand_path"))
 {              
   #Returns the location of a file in a directory named in getOptions("project_dirs")
-  as.character(path_expand(
+  as.character(.path_expand(
     with(getOption("project_dirs"),   
       file.path(path[name == name.], file)
     ), 
     expand
   ))
 }
-
+ 
+is_data_suitable_for_project_dirs_option <- function(data)
+{          
+  #Checks to see if the input is suitable to be used for getOption("project_dirs")
+  if(!.is_data_suitable_base(data))
+  {
+    return(FALSE)
+  }
+  if(!all(is_valid_variable_name(data$name)))
+  {
+    warning("The values in the name column are not all unique valid variable names")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+  
 write_readme_txt <- function(infile, outfile = "README.txt")
 {
   #Writes a string suitable for a README.txt file, detailing contents of directories
