@@ -1,4 +1,4 @@
-path_expand <- function(path, expand)
+.path_expand <- function(path, expand)
 {
   #Converts a relative path to an absolute path in the PWD
   if(is.null(path)) warning("path is NULL")
@@ -6,7 +6,7 @@ path_expand <- function(path, expand)
   path
 }
 
-is_data_suitable_for_projects_option <- function(data)
+.is_data_suitable_base <- function(data)
 {
   #Checks to see if the input is suitable to be used for getOption("projects")
   if(!is.data.frame(data))
@@ -45,19 +45,4 @@ is_data_suitable_for_projects_option <- function(data)
     return(FALSE)
   }  
   TRUE
-}
-
-is_data_suitable_for_project_dirs_option <- function(data)
-{          
-  #Checks to see if the input is suitable to be used for getOption("project_dirs")
-  if(!is_data_suitable_for_projects_option(data))
-  {
-    return(FALSE)
-  }
-  if(!all(is_valid_variable_name(data$name)))
-  {
-    warning("The values in the name column are not all unique valid variable names")
-    return(FALSE)
-  }
-  return(TRUE)
 }
