@@ -46,3 +46,9 @@
   }  
   TRUE
 }
+
+.is_valid_variable_name <- function(names, unique = TRUE)
+{
+  #Checks that names are valid variable names
+  names == make.names(names, unique = unique)
+}
