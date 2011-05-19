@@ -37,7 +37,7 @@ old_options <- options(projects = data.frame(
   startup = "message('Starting my_test_project')",
   stringsAsFactors = FALSE
 ))
-open_project("my_project")
+open_project("my_test_project")
 cat("current working dir is", getwd(), "\n")
 options(old_options)
 setwd(old_wd)
