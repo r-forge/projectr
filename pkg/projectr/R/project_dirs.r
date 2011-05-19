@@ -2,7 +2,10 @@ copy_dir_structure <- function(location = getwd())
 {
   #Creates a data frame suitable for getOption("project_dirs") from the
   #directories that exist in the specified location
+  #NOTE: Can't just pass location into list.dirs because it may return absolute paths.
+  old_wd <- setwd(location)
   dir_list <- list.dirs()[-1L]
+  setwd(old_wd)
   data.frame(
     name = make.names(basename(dir_list), unique = TRUE),
     path = substring(dir_list, 3L),
@@ -101,7 +104,7 @@ is_data_suitable_for_project_dirs_option <- function(data)
   {
     return(FALSE)
   }
-  if(!all(is_valid_variable_name(data$name)))
+  if(!all(.is_valid_variable_name(data$name)))
   {
     warning("The values in the name column are not all unique valid variable names")
     return(FALSE)
