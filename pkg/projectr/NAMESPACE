@@ -1,1 +1,1 @@
-exportPattern("^(create|get|is_data|write)_")
+exportPattern("^(copy|create|get|is|open|write)_")
