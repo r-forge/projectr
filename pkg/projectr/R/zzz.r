@@ -2,7 +2,7 @@
 {     
   options(expand_path = FALSE)
   
-  project_dirs_file_name <- "project_dirs.csv"
+  project_dirs_file_name <- ".Rprojectdirs"
   dir_file <- file.path("~", project_dirs_file_name)           
   if(!exists(dir_file))
   {
@@ -20,7 +20,7 @@
     warning("Could not set 'project_dirs' option")
   }
   
-  projects_file <- file.path("~", "projects.csv")
+  projects_file <- file.path("~", ".Rprojects")
   if(exists(projects_file))
   {
     projects <- try(
