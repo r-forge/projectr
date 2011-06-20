@@ -27,13 +27,30 @@ projectr_description <- packageDescription("projectr")
 
 \section{Introduction}
 
-Project directory structures can easily become unwieldy if you are not careful. 
-Even worse, it is very easy for directory structures to be completely different
-from one project to the next.  This can make it difficult to find files at a 
-later date.  It also prevents code reuse, because hard-coded links to files are
-not portable between projects.  The \verb@projectr@ package contains simple 
-tools to allow programmatic generation of project struture, thus eliminating 
-human frailty.
+The \verb@projectr@ package helps you to navigate between and within projects 
+and makes your code more portable between projects.
+
+R scripts often start with a lot of cruft.  Here's an example:
+
+\begin{verbatim}
+setwd("c:/source/project/my project")
+library(ggplot2)
+theme_set(theme_bw(16))
+source("Analysis/my functions.r")
+my_data <- read.csv("Data/my dataset.csv")
+\end{verbatim}
+
+You move to the project directory, load some packages, configure some settings, 
+source some files and read in some data.  Unfortunately, project directory 
+structures can easily become unwieldy if you are not careful.  Even worse, it 
+is very easy for directory structures to be completely different from one 
+project to the next. So all those hard coded links, as well as being fiddly to 
+manage and a source of bugs, prevent code reuse, because hard-coded links to 
+files are not portable between projects. The \verb@projectr@ package contains 
+simple tools to allow programmatic generation of project structure, thus 
+eliminating human frailty.
+
+%TODO: talk about removing setwd here.
 
 To illustrate the basic concept, if we want to list the contents of the 
 directory where we keep our graphs, a typical method would be to hard-code a 
