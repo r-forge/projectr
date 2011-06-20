@@ -30,6 +30,7 @@ A one row data frame with the name, path and startup code for the project.
 Richie Cotton
 }
 \examples{
+\dontrun{
 old_wd <- getwd()
 old_options <- options(projects = data.frame(
   name = "my_test_project",
@@ -41,6 +42,7 @@ open_project("my_test_project")
 cat("current working dir is", getwd(), "\n")
 options(old_options)
 setwd(old_wd)
+}
 }
 \keyword{project}
 \keyword{open} 
