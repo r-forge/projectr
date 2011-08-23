@@ -13,7 +13,7 @@ is_data_suitable_for_projects_option <- function(data)
   return(TRUE)
 }
 
-open_project <- function(name., cleanup = FALSE, ...)
+init_project <- function(name., cleanup = FALSE, ...)
 {
   #Opens a project named in getOption("projects"), changing the working directory and running startup code.
   projects <- getOption("projects")
