@@ -24,12 +24,12 @@
   {
     if(!(column %in% colnames(data)))
     {
-      warning(paste("There is no column named", sQuote(column)))
+      warning("There is no column named ", sQuote(column))
       return(FALSE)
     }
     if(!is.character(data[[column]]))
     {
-      warning(paste("The", sQuote(column), "column does not have mode 'character'"))
+      warning("The ", sQuote(column), " column does not have mode 'character'")
       return(FALSE)
     }
   } 
